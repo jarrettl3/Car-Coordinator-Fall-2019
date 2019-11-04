@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+	<title>Car Coordinator</title>
+    <link rel="stylesheet" type ="text/css" href="ccstyle.css">
+
+</head>
+<script>
+    function setName(){
+        var nameSpace = document.getElementById("name");
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                nameSpace.innerHTML = JSON.parse(this.responseText) + "!";
+            }
+        };
+        xhttp.open("GET", "getData.php", true);
+        xhttp.send();
+        //alert(fname);
+        //nameSpace.innerHTML = fname;
+    }
+    function goToProf(){
+        window.location.replace("profile.php");
+    }
+    function goToEvents(){
+        window.location.replace("events.php");
+    }
+    function logout(){
+        document.write(' <?php unset($_SESSION); ?>');
+        window.location.replace("loginCode.php");
+    }
+    function newEvent(){
+        window.location.replace("createEvent.php");
+    }
+    function editProfile(){
+        window.location.replace("editProfile.php");
+    }
+    function logout(){
+        document.write(' <?php unset($_SESSION); ?>');
+        window.location.replace("loginCode.php");
+    }
+</script>
+<body onload = "setName()">
+    <?php require 'webpage.php';?> 
+	<div class = "sitename"><img src = "logo2.png" alt = "Car Coordinator Logo"></div>
+	<div class = "bar"><span class = "item" onclick = "goToProf()" >My Profile</span><span class = "item" onclick = "goToEvents()">Events</span><span class = "item" onclick = "newEvent()">New Event</span><span class = "item" onclick = "logout()">Logout</span></div>
+	<div class = "main" id = "main"> Welcome, <span id = "name"></span><br>
+    User Car Coordinator to plan carpooling for events!</div>
+</body>

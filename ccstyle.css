@@ -1,0 +1,69 @@
+/*Style for Car Coordinator Webpages*/        
+        .item{
+			color: powderblue;
+			text-shadow: 2px 2px blue;
+			border-bottom-color: coral;
+			border-bottom-width: 5px;
+			padding: 5px;
+			padding-left: 25px;
+			padding-right: 25px;
+		}
+		.item:hover{
+            background-color: #9933ff;
+            cursor: pointer;
+            border-radius: 25px;
+		}
+		.bar{
+			background-color: #8f3985;
+			border-bottom:  purple solid 5px;
+            border-right: purple solid 5px;
+			text-align: right;
+			left: 0px;
+			right: 100%;
+            border-radius: 25px;
+		}
+		body{
+			background: linear-gradient(to bottom right, #C8A2C8, white) fixed;
+            //background-repeat: no-repeat;
+            /*background-image: url("wheels2.png");
+            background-repeat: repeat;
+            background-size: 20%;
+            padding: 15px;*/
+		}
+		.sitename{
+			text-align: center;
+			color: #cc00cc;
+			text-shadow: 2px 2px #660066;
+		}
+		.main{
+            font-family: georgia;
+			background-color: white;
+			margin: auto;
+			width: 700px;
+			padding: 10px;
+			bottom: -100%;
+            border-bottom-right-radius: 25px;
+            border-bottom-left-radius: 25px;
+            border-right-color: gainsboro;
+            border-bottom-color: gainsboro;
+            border-right-width: 10px;
+            border-bottom-width: 10px;
+            border-right-style: solid;
+            border-bottom-style: solid;
+		}
+        .vent:hover{
+            background-color: aquamarine;
+            cursor: pointer;
+        }
+        .tagline{
+            color: gray;
+            border-right-color: rebeccapurple;
+            border-right-width: 10px;
+            left: inherit;
+            font-size: 25;
+            text-align: left, top;
+            text-shadow: 2px 2px powderblue;
+        }
+        input[type = button]{
+            border-radius: 30px;
+        }

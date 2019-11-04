@@ -1,0 +1,66 @@
+<?php
+session_start(); 
+// Is the admin logged in? 
+if (!isset($_SESSION['user']))
+{
+   header("location: loginCode.php");
+   exit();
+}
+
+    $servername = "avl.cs.unca.edu";
+                $username = "jlefler";
+                $password = "sql4you";
+
+
+                $conn = new mysqli($servername, $username, $password);
+    $fname = mysql_query($conn, "SELECT first_name FROM User WHERE username = ' $username'");
+    $teststring = "teststring";
+
+
+echo . $teststring . ' <!DOCTYPE html>
+<html lang = "en">
+<head>
+	<title>Car Coordinator</title>
+	<style>
+		.item{
+			color: powderblue;
+			text-shadow: 2px 2px blue;
+			border-bottom-color: coral;
+			border-bottom-width: 5px;
+			padding: 5px;
+			padding-left: 25px;
+			padding-right: 25px;
+		}
+		span:hover{
+				background-color: #9933ff;
+		}
+		.bar{
+			background-color: purple;
+			border-bottom: #9933ff solid 5px;
+			text-align: right;
+			left: 0px;
+			right: 100%;
+		}
+		body{
+			background-color: #cc99ff;
+		}
+		.sitename{
+			text-align: center;
+			color: #cc00cc;
+			text-shadow: 2px 2px #660066;
+		}
+		.main{
+			background-color: white;
+			margin: auto;
+			width: 700px;
+			padding: 10px;
+			bottom: -100%;
+		}
+	</style>
+</head>
+<body>
+	<h1 class = "sitename">Car Coordinator</h1>
+	<div class = "bar"><span class = "item">My Account</span><span class = "item">Invites</span><span class = "item">New Event</span></div>
+	<div class = "main"> Here is where some sort of info would go idk what it would be at this time, I just need to fill this space with some text to test what happens when there's a lot of text on this object woohooo let's go, text it up!</div>
+	
+</body>
