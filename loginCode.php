@@ -121,7 +121,7 @@
 
     <body>
         <div class = "sitename">
-            <img src = "logo2.png" alt = "Car Coordinator Logo">
+            <img src = "betterwheels2.png" alt = "Car Coordinator Logo">
         </div>
         <div class = "bar"><span></span></div>
         <div class = "main">

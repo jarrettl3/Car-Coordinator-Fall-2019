@@ -16,6 +16,7 @@
         $fname = mysqli_real_escape_string($conn,$_POST['fname']);
         $lname = mysqli_real_escape_string($conn,$_POST['lname']);
         $address = mysqli_real_escape_string($conn,$_POST['address']);
+        $email = mysqli_real_escape_string($conn, $_POST['email']);
         $provider = mysqli_real_escape_string($conn, $_POST['provider']);
         $polnum = mysqli_real_escape_string($conn, $_POST['polnum']);
         
@@ -37,9 +38,13 @@
         //$today = getdate();
         $date = date("Y-m-d");
         
-        $sql2 = "INSERT INTO User VALUES ('$i', '$username', '$password', '$fname', '$lname', '$date', '$address', '$provider', '$polnum')";
+        $sql2 = "INSERT INTO User VALUES ('$i', '$username', '$password', '$fname', '$lname', '$date', '$address', '$provider', '$polnum', '$email')";
         
         if ($conn->query($sql2) === TRUE) {
+            if(!is_null($email)){
+                mail($email, "Welcome to Car Coordinator!", "Thank you for joining Car Coordinator, ".$fname."! \n Please keep this email address handy, because other users' messages and invites for you will be sent here!", "FROM: <DONOTREPLY@carcoordinator>");
+            }
+             
             echo "New record created successfully! Redirecting...";
             print "<script> window.location.replace(\"loginCode.php\") </script>";
         } else {
@@ -66,6 +71,7 @@
                 <label>First Name: </label><input type = "text" name = "fname" class = "contain"/><br /><br />
                 <label>Last Name: </label><input type = "text" name = "lname" class = "contain"/><br /><br />
                 <label>Address: </label><input type = "text" name = "address" class = "contain"/><br /><br />
+                <label>Email Address: </label><input type = "text" name = "email" class = "contain"/><br/><br/>
                 <label>Insurance Provider: </label><input type = "text" name = "provider" class = "contain"/><br /><br />
                 <label>Policy Number: </label><input type = "text" name = "polnum" class = "contain"/><br /><br />
                 <input type = "submit" value = " Submit "/><br />

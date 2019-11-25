@@ -73,7 +73,7 @@ echo ' <!DOCTYPE html>
         var vehicleList = "";
         for(var i = 0; i < vehicles.length; i++){
             if(vehicles[i][1] == '.$_SESSION['userID'].'){
-                vehicleList += vehicles[i][4] + " " + vehicles[i][2] + " " + vehicles[i][3] + ", " + vehicles[i][5] + " seats, VIN " + vehicles[i][0] + "<br>";
+                vehicleList += vehicles[i][4] + " " + vehicles[i][2] + " " + vehicles[i][3] + ", " + vehicles[i][5] + " seats, VIN " + vehicles[i][0] + ", License Plate Number: " + vehicles[i][7] + "<br>";
             }
         }
         if(vehicleList == ""){
@@ -99,7 +99,7 @@ echo ' <!DOCTYPE html>
     }
 </script>
 <body  onload = "goToProf()">
-	<div class = "sitename"><img src = "logo2.png" alt = "Car Coordinator Logo"></div>
+	<div class = "sitename"><img src = "betterwheels2.png" alt = "Car Coordinator Logo"></div>
 	<div class = "bar"><span class = "item" onclick = "goToProf()" >My Profile</span><span class = "item" onclick = "goToEvents()">Events</span><span class = "item" onclick = "newEvent()">New Event</span><span class = "item" onclick = "logout()">Logout</span></div>
 	<div class = "main" id = "main"></div>
 	

@@ -138,7 +138,7 @@ if (!isset($_SESSION['userID']))
                 $eventid = mysqli_real_escape_string($conn, $_POST['eventId']);
                 $todayDate = date("Y-m-d");
                 $vehicleVIN = $_POST['vehicleList'];
-                $pledgeSql = "INSERT INTO Vehicle_Pledge VALUES ('$g', '$vehicleVIN', '$eventid',  '$todayDate')";
+                $pledgeSql = "INSERT INTO Vehicle_Pledge VALUES ('$g', '$vehicleVIN', '$eventid',  '$todayDate', '')";
                 if($conn->query($pledgeSql) === TRUE){
                     $sql5 = "SELECT * FROM Vehicle_Pledge
                         ORDER BY Pledge_ID";
@@ -279,6 +279,10 @@ echo ' <!DOCTYPE html>
     function goToProf(){
         window.location.href = "profile.php";
     }
+    function clearSelect(){
+        window.location.href = "events.php";
+        goToEvents();
+    }
     function goToEvents(){
         document.title = "Car Coordinator | Events";
         var page = document.getElementById("main");
@@ -287,7 +291,7 @@ echo ' <!DOCTYPE html>
         var en = '.$_SESSION['events'].';
         if(en != null){
             while(i < en.length){
-                text += "<div class = \"vent\" id = \'" + en[i][4] + "\' onclick = \"goToSpecific(this.id," + en[i][0] + ")\">" + en[i][4] + "</div> <br>";
+                text += "<div class = \"vent\" id = \'" + en[i][4] + "\' onclick = \"setSelect(" + en[i][0]+ ")\">" + en[i][4] + "</div> <br>";
                 i++;
             }
         }else{
@@ -295,9 +299,19 @@ echo ' <!DOCTYPE html>
         }
         
         page.innerHTML = text;
+        var myurl = window.location.href;
+        var eventSelect = myurl.split("?");
+        if(eventSelect.length > 1){
+            eventSelect = eventSelect[1].split("=")[1];
+            goToSpecific(eventSelect);
+        }
     }
-    function goToSpecific(eventname, eventid){
-        document.title = "Car Coordinator | " + eventname;
+    function setSelect(event){
+        window.location.href = "events.php?event=" + event;
+    }
+    function goToSpecific(eventid){
+        
+        document.title = "Car Coordinator | EVENT";
         var events = '.$_SESSION['events'].';
         var x = 0;
         while(x < events.length){
@@ -306,6 +320,9 @@ echo ' <!DOCTYPE html>
             }
             x++;
         }
+        var eventname = events[evrow][4];
+        document.title = "Car Coordinator | " + eventname;
+        
         var users = '.$_SESSION['users'].';
         var allUsers = '.$_SESSION['allUsers'].';
         var eid = Number(eventid);
@@ -379,11 +396,12 @@ echo ' <!DOCTYPE html>
                             }
                             var claimId = "showClaim" + e;
                             var theClaimsId = "theClaims" + e;
-                            var newText = "<div style = \"text-indent: 50px; display: inline-block\">" + allUsers[vehicles[e][1]-1][1] + " " + allUsers[vehicles[e][1]-1][2] + "\'s Vehicle -- " + claimTotal + "/" + vehicles[e][5] + " Passengers</div><span id = \'" + claimId + "\' class = \"vent\" onclick = \"showClaims(\'" + e + "\')\" style = \"color: gray\">(+)</span> <div style = \"display: none\"id = \'" + theClaimsId + "\'>" + claimList + "</div>";
-                             numPledges++;
-                             if(vehicles[e][1] == uid){
-                                newText += "<form action = \"\" method = \"post\"><input type = \"hidden\" value = \"deletePledge\" name = \"whichForm\"><input type = \"hidden\" name = \"pledgeid\" value = \"" + pledges[i][0] + "\"><input type = \"submit\" value = \"Remove Pledge\" style = \"position: relative; left: 200px\"></form>";
+                            var newText = "<div style = \"text-indent: 50px; display: inline-block\">" + allUsers[vehicles[e][1]-1][1] + " " + allUsers[vehicles[e][1]-1][2] + "\'s Vehicle -- " + claimTotal + "/" + vehicles[e][5] + " Passengers</div>"
+                            if(vehicles[e][1] == uid){
+                                newText += "<div style = \"text-indent: 50px\"><form action = \"\" method = \"post\"><input type = \"hidden\" value = \"deletePledge\" name = \"whichForm\"><input type = \"hidden\" name = \"pledgeid\" value = \"" + pledges[i][0] + "\"><input type = \"submit\" value = \"Remove Pledge\"></form></div>";
                              }
+                            newText += "<div style = \"text-indent: 75px; font-style: italic\">" + pledges[i][4] + "</div> <div style = \"text-indent: 55px; display: inline-block\">Claimed Seats:</div> <span id = \'" + claimId + "\' class = \"vent\" onclick = \"showClaims(\'" + e + "\')\" style = \"color: gray\">(+)</span> <div style = \"display: none\"id = \'" + theClaimsId + "\'>" + claimList + "</div>";
+                             numPledges++;
                         }
                     }
                 
@@ -464,8 +482,8 @@ echo ' <!DOCTYPE html>
     }
 </script>
 <body onload="goToEvents()">
-	<div class = "sitename"><img src = "logo2.png" alt = "Car Coordinator Logo"></div>
-	<div class = "bar"><span class = "item" onclick = "goToProf()" >My Profile</span><span class = "item" onclick = "goToEvents()">Events</span><span class = "item" onclick = "newEvent()">New Event</span><span class = "item" onclick = "logout()">Logout</span></div>
+	<div class = "sitename"><img src = "betterwheels2.png" alt = "Car Coordinator Logo"></div>
+	<div class = "bar"><span class = "item" onclick = "goToProf()" >My Profile</span><span class = "item" onclick = "clearSelect()">Events</span><span class = "item" onclick = "newEvent()">New Event</span><span class = "item" onclick = "logout()">Logout</span></div>
 	<div class = "main" id = "main"></div>
 	
 </body>';

@@ -15,12 +15,13 @@
         $model = mysqli_real_escape_string($conn,$_POST['model']);
         $color = mysqli_real_escape_string($conn,$_POST['color']);
         $numseats = mysqli_real_escape_string($conn,$_POST['numseats']);
+        $platenum = mysqli_real_escape_string($conn,$_POST['platenum']);
         $vin = mysqli_real_escape_string($conn,$_POST['vin']);
         $uid = $_SESSION['userID'];
         
         $date = date("Y-m-d");
         
-        $sql = "INSERT INTO Vehicle VALUES ('$vin', '$uid', '$make', '$model', '$color', '$numseats', '$date')";
+        $sql = "INSERT INTO Vehicle VALUES ('$vin', '$uid', '$make', '$model', '$color', '$numseats', '$date', '$platenum')";
         
         if ($conn->query($sql) === TRUE) {
             echo "New record created successfully! Redirecting...";
@@ -47,6 +48,7 @@
                 <label>Model: </label><input type = "text" name = "model" class = "contain"/><br/><br />
                 <label>Color: </label><input type = "text" name = "color" class = "contain"/><br /><br />
                 <label>Number of Passenger Seats: </label><input type = "text" name = "numseats" class = "contain"/><br /><br />
+                <label>License Plate Number: </label><input type = "text" name = "platenum" class = "contain"/><br/><br/>
                 <label>VIN: </label><input type = "text" name = "vin" class = "contain"/><br /><br />
                 <input type = "submit" value = " Submit "/><br />
                </form>

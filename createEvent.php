@@ -44,7 +44,7 @@ if (!isset($_SESSION['userID']))
         
         if ($conn->query($sql2) === TRUE) {
             echo "New record created successfully! Redirecting...";
-            print "<script> window.location.replace(\"webpage.php\") </script>";
+            print "<script> window.location.replace(\"events.php?event=\" + $i) </script>";
         } else {
             echo "Error: " . $sql2 . "<br>" . $conn->error;
         }
@@ -63,7 +63,7 @@ echo ' <!DOCTYPE html>
     
 </script>
 <body>
-	<div class = "sitename"><img src = "logo2.png" alt = "Car Coordinator Logo"></div>
+	<div class = "sitename"><img src = "betterwheels2.png" alt = "Car Coordinator Logo"></div>
 	<div class = "bar" style = "text-align: center"><span style = "color: powderblue;
 			text-shadow: 2px 2px blue;
 			border-bottom-color: coral;
