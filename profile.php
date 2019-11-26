@@ -91,8 +91,7 @@ echo ' <!DOCTYPE html>
         window.location.replace("newCar.php");
     }
     function logout(){
-        document.write(\' <?php unset($_SESSION); ?>\');
-        window.location.replace("loginCode.php");
+        window.location.replace("logout.php");
     }
     function editProfile(){
         window.location.replace("editProfile.php");

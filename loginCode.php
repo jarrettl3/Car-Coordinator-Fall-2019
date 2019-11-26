@@ -98,7 +98,25 @@
                             $_SESSION['policy'] = $polnum;
                             $_SESSION['username'] = $uname;
                             $_SESSION['dateAdded'] = date_format($dateAdded, 'm-d-Y');
-                            exit(header("Location: carcoordinator.html"));
+                            
+                            $url = $_SERVER['REQUEST_URI'];
+                            $event = explode('?',$url);
+                            if (count($event) > 1){
+                                header("location: events.php?".$event[1]);
+                                exit();
+                            }else{
+                                header("location: carcoordinator.html");
+                                exit();
+                            }
+                             echo '<script> var myurl = window.location.href;
+                                var eventSelect = myurl.split("?");
+                                if(eventSelect.length > 1){
+                                    eventSelect = eventSelect[1].split("=")[1];
+                                    window.location.href = "events.php?event=" + eventSelect;
+                                }else{
+                                    window.location.href = "carcoordinator.html";
+                                }
+                                </script>';
                         }
                     }else {
                             $message = "invalid login";

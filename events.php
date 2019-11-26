@@ -3,8 +3,15 @@ session_start();
 // Is the user logged in? 
 if (!isset($_SESSION['userID']))
 {
-   header("location: loginCode.php");
-   exit();
+    $url = $_SERVER['REQUEST_URI'];
+    $event = explode('?',$url);
+    if (count($event) > 1){
+        header("location: loginCode.php?".$event[1]);
+        exit();
+    }else{
+        header("location: loginCode.php");
+        exit();
+    }
 }
 
     $servername = "avl.cs.unca.edu";
@@ -47,7 +54,7 @@ if (!isset($_SESSION['userID']))
     $row3 = mysqli_fetch_all($result3);
     $_SESSION['invites'] = json_encode($row3);
 
-    $sql4 = "SELECT User_ID, Firstname, Lastname, Username FROM User
+    $sql4 = "SELECT User_ID, Firstname, Lastname, Username, Email_Address FROM User
             ORDER BY User_ID";
     $result4 = mysqli_query($conn, $sql4);
     $row4 = mysqli_fetch_all($result4);
@@ -102,6 +109,7 @@ if (!isset($_SESSION['userID']))
                         $eventname = mysqli_real_escape_string($conn, $_POST['eventName']);
                         $inviteSql = "INSERT INTO Invitation VALUES ('$e', '$eventid', '$addingUserId')";
                         if ($conn->query($inviteSql) === TRUE) {
+                            mail($theUsers[$i-1][4], "New Invitation", "Hello, ".$theUsers[$i-1][3].". \n You have been invited to the event ".$eventname." on Car Coordinator! \n Click here to view the event: www.cs.unca.edu/~jlefler/carcoordinator/events.php?event=".$eventid, "FROM: <invites@carcoordinator>");
                             echo "Invite posted";
                             $sql4 = "SELECT User_ID, Firstname, Lastname, Username FROM User
                                 ORDER BY User_ID";
@@ -138,7 +146,8 @@ if (!isset($_SESSION['userID']))
                 $eventid = mysqli_real_escape_string($conn, $_POST['eventId']);
                 $todayDate = date("Y-m-d");
                 $vehicleVIN = $_POST['vehicleList'];
-                $pledgeSql = "INSERT INTO Vehicle_Pledge VALUES ('$g', '$vehicleVIN', '$eventid',  '$todayDate', '')";
+                $pledgedesc = mysqli_real_escape_string($conn, $_POST['pledgedesc']);
+                $pledgeSql = "INSERT INTO Vehicle_Pledge VALUES ('$g', '$vehicleVIN', '$eventid',  '$todayDate', '$pledgedesc')";
                 if($conn->query($pledgeSql) === TRUE){
                     $sql5 = "SELECT * FROM Vehicle_Pledge
                         ORDER BY Pledge_ID";
@@ -299,6 +308,7 @@ echo ' <!DOCTYPE html>
         }
         
         page.innerHTML = text;
+        
         var myurl = window.location.href;
         var eventSelect = myurl.split("?");
         if(eventSelect.length > 1){
@@ -425,8 +435,10 @@ echo ' <!DOCTYPE html>
             vehicleOpt = "<select name = \"vehicleList\">" + vehicleOpt + "</select>";
         }
         
-        page.innerHTML = "<h1>"  + eventname + "</h1><h3>" + events[evrow][6] + "</h3><h3>" + eventDate + " at " + eventTime + "</h3><p> by " + allUsers[events[evrow][1]-1][1] + " " + allUsers[events[evrow][1]-1][2] + "<br><br> <p>" + events[evrow][5] +"</p> <BR><BR> Invited: [" + numInvites + " total]<span class = \"vent\" onclick=\"showInvites()\" style = \"color: gray\" id = \"showInvites\">(+)</span> <BR> <div id = \"theInvited\" style = \"display: none\">" + inviteList + "</div> <form action = \"\" method = \"post\"><label>Invite: </label> <input type = \"text\" name = \"userToInvite\" class = \"contain\"/><input type=\"hidden\" id=\"eventId\" name=\"eventId\" value=\"" + eid + "\"> <input type = \"hidden\" id = \"eventName\" name = \"eventName\" value=\"" + eventname + "\"><input type = \"hidden\" value = \"invite\" name = \"whichForm\"><input type = \"submit\" value = \"Invite\" id = \"sbmtbtn\"> </form> <BR>Vehicles: [" + numPledges + " total]<span class = \"vent\" onclick = \"showPledges()\" style = \"color: gray\" id = \"showPledges\">(+)</span><BR><div id = \"thePledges\" style = \"display: none\">" + pledgeList + "<\div> <BR> <form action = \"\" method = \"post\"><input type = \"hidden\" value = \"pledge\" name = \"whichForm\"><input type=\"hidden\" id=\"eventId\" name=\"eventId\" value=\"" + eid + "\"><input type=\"submit\" value=\"Pledge Vehicle\" id = \"sbmtbtn\">" + vehicleOpt + "</form>";
+        page.innerHTML = "<h1>"  + eventname + "</h1><h3>" + events[evrow][6] + "</h3><h3>" + eventDate + " at " + eventTime + "</h3><p> by " + allUsers[events[evrow][1]-1][1] + " " + allUsers[events[evrow][1]-1][2] + "<br><br> <p>" + events[evrow][5] +"</p> <BR><BR> Invited: [" + numInvites + " total]<span class = \"vent\" onclick=\"showInvites()\" style = \"color: gray\" id = \"showInvites\">(+)</span> <BR> <div id = \"theInvited\" style = \"display: none\">" + inviteList + "</div> <form action = \"\" method = \"post\"><label>Invite: </label> <input type = \"text\" name = \"userToInvite\" class = \"contain\"/><input type=\"hidden\" id=\"eventId\" name=\"eventId\" value=\"" + eid + "\"> <input type = \"hidden\" id = \"eventName\" name = \"eventName\" value=\"" + eventname + "\"><input type = \"hidden\" value = \"invite\" name = \"whichForm\"><input type = \"submit\" value = \"Invite\" id = \"sbmtbtn\"> </form> <BR>Vehicles: [" + numPledges + " total]<span class = \"vent\" onclick = \"showPledges()\" style = \"color: gray\" id = \"showPledges\">(+)</span><BR><div id = \"thePledges\" style = \"display: none\">" + pledgeList + "<\div> <BR> <form action = \"\" method = \"post\"><input type = \"hidden\" value = \"pledge\" name = \"whichForm\"><input type=\"hidden\" id=\"eventId\" name=\"eventId\" value=\"" + eid + "\"><label>Pledge Description: </label><BR><textarea name = \"pledgedesc\" rows=\"5\" cols=\"35\"></textarea><BR>" + vehicleOpt + "<input type=\"submit\" value=\"Pledge Vehicle\" id = \"sbmtbtn\"></form>";
     }
+    
+
     function showInvites(){
         var invites = document.getElementById("theInvited");
         var show = document.getElementById("showInvites");
@@ -477,8 +489,7 @@ echo ' <!DOCTYPE html>
         window.location.replace("createEvent.php");
     }
     function logout(){
-        document.write(\' <?php unset($_SESSION); ?>\');
-        window.location.replace("loginCode.php");
+        window.location.replace("logout.php");
     }
 </script>
 <body onload="goToEvents()">
