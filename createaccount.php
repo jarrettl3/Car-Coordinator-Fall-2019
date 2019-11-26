@@ -12,7 +12,7 @@
 
     if($_SERVER['REQUEST_METHOD'] == "POST"){
         $username = mysqli_real_escape_string($conn,$_POST['username']);
-        $password = mysqli_real_escape_string($conn,$_POST['password']);
+        $password = crypt(mysqli_real_escape_string($conn,$_POST['password']), "B7EG93KI");
         $fname = mysqli_real_escape_string($conn,$_POST['fname']);
         $lname = mysqli_real_escape_string($conn,$_POST['lname']);
         $address = mysqli_real_escape_string($conn,$_POST['address']);

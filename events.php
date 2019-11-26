@@ -85,9 +85,9 @@ if (!isset($_SESSION['userID']))
                 echo "<script>console.log('Username entered: " . $userInvite . "');</script>";
                 $theUsers = $row4;
                 echo "<script>console.log('Users: " . $theUsers . "');</script>";
-                for($i = 1; $i < count($theUsers); $i++){
-                    echo "<script>console.log('Username comparing to: " . $theUsers[$i-1][3]. "');</script>";
-                    if(strcmp($userInvite, $theUsers[$i-1][3]) == 0){
+                for($i = 0; $i < count($theUsers); $i++){
+                    echo "<script>console.log('Username comparing to: " . $theUsers[$i][3]. "');</script>";
+                    if(strcmp($userInvite, $theUsers[$i][3]) == 0){
                         echo "<script>console.log('Matching username');</script>";
                         $sql = "SELECT * FROM Invitation ORDER BY Invite_ID";
                         $result = mysqli_query($conn, $sql);
@@ -104,12 +104,12 @@ if (!isset($_SESSION['userID']))
                                 $toLoop = False;
                             }
                         }
-                        $addingUserId = $theUsers[$i-1][0];
+                        $addingUserId = $theUsers[$i][0];
                         $eventid = mysqli_real_escape_string($conn, $_POST['eventId']);
                         $eventname = mysqli_real_escape_string($conn, $_POST['eventName']);
                         $inviteSql = "INSERT INTO Invitation VALUES ('$e', '$eventid', '$addingUserId')";
                         if ($conn->query($inviteSql) === TRUE) {
-                            mail($theUsers[$i-1][4], "New Invitation", "Hello, ".$theUsers[$i-1][3].". \n You have been invited to the event ".$eventname." on Car Coordinator! \n Click here to view the event: www.cs.unca.edu/~jlefler/carcoordinator/events.php?event=".$eventid, "FROM: <invites@carcoordinator>");
+                            mail($theUsers[$i][4], "New Invitation", "Hello, ".$theUsers[$i][3].". \n You have been invited to the event ".$eventname." on Car Coordinator! \n Click here to view the event: www.cs.unca.edu/~jlefler/carcoordinator/events.php?event=".$eventid, "FROM: <invites@carcoordinator>");
                             echo "Invite posted";
                             $sql4 = "SELECT User_ID, Firstname, Lastname, Username FROM User
                                 ORDER BY User_ID";

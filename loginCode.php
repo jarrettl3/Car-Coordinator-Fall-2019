@@ -23,7 +23,7 @@
 
       
                     $myusername = mysqli_real_escape_string($conn,$_POST['username']);
-                    $mypassword = mysqli_real_escape_string($conn,$_POST['password']); 
+                    $mypassword = crypt(mysqli_real_escape_string($conn,$_POST['password']), "B7EG93KI"); 
       
                     $sql = "SELECT User_ID FROM User WHERE username = '$myusername' and password = '$mypassword'";
                     $result = mysqli_query($conn,$sql);
